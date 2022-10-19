@@ -38,6 +38,8 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                     call.argument(PLAYER_UNIQUE_ID),
                     R.drawable.ic_notification
                 )
+                Toast.makeText(context, INIT_METHOD_CALL, Toast.LENGTH_LONG).show()
+
                 PlayerAttributes.Builder()
                     .withDisplayName(call.argument(PLAYER_NAME)).build();
             }
@@ -55,6 +57,8 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                     }
 
                 })
+
+                Toast.makeText(context, SEND_GAMEBALL_EVENT, Toast.LENGTH_LONG).show()
             }
 
             "getPlatformVersion" -> {
