@@ -33,7 +33,11 @@ abstract class GameballPlatform extends PlatformInterface {
    return _instance.initMethodCall(gameBallKey,playerUniqueId,playerName);
   }
 
-  Future sendGameballEvent(String eventName,HashMap <String,dynamic> enevtProperties) {
-    return _instance.sendGameballEvent(eventName,enevtProperties);
+  Future sendGameballEvent(String eventName,HashMap <String,dynamic> eventProperties) {
+    return _instance.sendGameballEvent(eventName,eventProperties);
+  }
+  Future sendUserProprites(HashMap<String, dynamic> userProprites) {
+    return GameballPlatform.instance
+        .sendUserProprites( userProprites);
   }
 }

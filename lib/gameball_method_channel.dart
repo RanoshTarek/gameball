@@ -29,12 +29,17 @@ class MethodChannelGameball extends GameballPlatform {
   }
 
   @override
-  Future sendGameballEvent(String eventName,HashMap <String,dynamic> enevtProperties)  async {
+  Future sendGameballEvent(
+      String eventName, HashMap<String, dynamic> eventProperties) async {
     await methodChannel.invokeMethod<String>(Constants.SEND_GAMEBALL_EVENT, {
       Constants.EVENT_NAME: eventName,
-      Constants.EVENT_PROPERTIES: enevtProperties
+      Constants.EVENT_PROPERTIES: eventProperties
     });
   }
 
-
+  @override
+  Future sendUserProprites(HashMap<String, dynamic> userProprites) async {
+    await methodChannel.invokeMethod<String>(
+        Constants.SEND_USER_DATA, {Constants.USER_PROPERTIES: userProprites});
+  }
 }

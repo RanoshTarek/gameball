@@ -4,8 +4,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.annotation.NonNull
 import com.gameball.gameball.GameBallApp
+import com.gameball.gameball.local.SharedPreferencesUtils
 import com.gameball.gameball.model.request.Action
 import com.gameball.gameball.model.response.PlayerAttributes
+import com.gameball.gameball.model.response.PlayerRegisterResponse
 import com.gameball.gameball.network.Callback
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -39,13 +41,10 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                     R.drawable.ic_notification
                 )
                 Toast.makeText(context, INIT_METHOD_CALL, Toast.LENGTH_LONG).show()
-
-                PlayerAttributes.Builder()
-                    .withDisplayName(call.argument(PLAYER_NAME)).build();
             }
             SEND_GAMEBALL_EVENT -> {
                 val action = Action();
-                val metaData =  call.argument(EVENT_PROPERTIES) as HashMap<String, Any>?
+                val metaData = call.argument(EVENT_PROPERTIES) as HashMap<String, Any>?
                 action.addEvent(call.argument(EVENT_NAME), metaData)
                 gameballInstance?.addAction(action, object : Callback<Any> {
                     override fun onSuccess(t: Any?) {
@@ -61,6 +60,68 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                 Toast.makeText(context, SEND_GAMEBALL_EVENT, Toast.LENGTH_LONG).show()
             }
 
+            SEND_USER_DATA -> {
+                val metaData = call.argument(USER_PROPERTIES) as HashMap<String, String>?
+                SharedPreferencesUtils.getInstance().putPlayerUniqueId(
+                    metaData!![PLAYER_UNIQUE_ID]?.toString()
+                        ?: ""
+                )
+
+                if (metaData?.get(PLAYER_NAME) != null) {
+                    sendUserData(
+                        PlayerAttributes.Builder().withDisplayName(
+                            metaData.get(
+                                PLAYER_NAME
+                            )
+                        ).build()
+                    )
+                }
+                if (metaData?.get(PLAYER_JOIN_DATE) != null) {
+                    sendUserData(
+                        PlayerAttributes.Builder().withJoinDate(
+                            metaData.get(
+                                PLAYER_JOIN_DATE
+                            )
+                        ).build()
+                    )
+                }
+                if (metaData?.get(PLAYER_MOBILE) != null) {
+                    sendUserData(
+                        PlayerAttributes.Builder().withMobileNumber(
+                            metaData.get(
+                                PLAYER_MOBILE
+                            )
+                        ).build()
+                    )
+                }
+                if (metaData?.get(PLAYER_AREA) != null) {
+                    val playerAttributes = PlayerAttributes.Builder().build()
+                    playerAttributes.addCustomAttribute(
+                        PLAYER_AREA,
+                        metaData.get(
+                            PLAYER_AREA
+                        ).toString()
+                    )
+                    sendUserData(
+                        playerAttributes
+                    )
+                }
+                if (metaData?.get(PLAYER_REGION) != null) {
+                    val playerAttributes = PlayerAttributes.Builder().build()
+                    playerAttributes.addCustomAttribute(
+                        PLAYER_REGION,
+                        metaData.get(
+                            PLAYER_REGION
+                        ).toString()
+                    )
+                    sendUserData(
+                        playerAttributes
+                    )
+                }
+
+                Toast.makeText(context, SEND_USER_DATA, Toast.LENGTH_LONG).show()
+            }
+
             "getPlatformVersion" -> {
                 result.success("Android ${android.os.Build.VERSION.RELEASE}")
             }
@@ -70,6 +131,22 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
+    fun sendUserData(playerAttributes: PlayerAttributes) {
+        gameballInstance?.editPlayerAttributes(
+            playerAttributes,
+            object : Callback<PlayerRegisterResponse?> {
+                override fun onSuccess(playerRegisterResponse: PlayerRegisterResponse?) {
+                    print("success gameBall editPlayerAttributes")
+
+                }
+
+                override fun onError(e: Throwable) {
+                    print("error gameBall editPlayerAttributes")
+
+                }
+            })
+    }
+
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
     }
@@ -77,11 +154,19 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
     companion object {
         var INIT_METHOD_CALL = "initMethodCall"
         var GAMEBALL_KEY = "gameBallKey"
+
         var PLAYER_UNIQUE_ID = "playerUniqueId"
         var PLAYER_NAME = "playerName"
+        var PLAYER_MOBILE = "playerMobile"
+        var PLAYER_AREA = "area"
+        var PLAYER_REGION = "region"
+        var PLAYER_JOIN_DATE = "playerJoinDate"
+
         var SEND_GAMEBALL_EVENT = "sendGameballEvent"
+        var SEND_USER_DATA = "sendUserData"
         var EVENT_NAME = "eventName"
         var EVENT_PROPERTIES = "eventProperties"
+        var USER_PROPERTIES = "userProperties"
     }
 
 }

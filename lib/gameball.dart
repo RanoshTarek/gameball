@@ -17,4 +17,9 @@ class Gameball {
     return GameballPlatform.instance
         .sendGameballEvent(eventName, enevtProperties);
   }
+
+  Future sendUserProprites(HashMap<String, dynamic> userProprites) {
+    return GameballPlatform.instance
+        .sendUserProprites( userProprites);
+  }
 }
