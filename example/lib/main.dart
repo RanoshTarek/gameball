@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
             ),
             GestureDetector(
               onTap: () async {
-                await _gameballPlugin.initMethodCall(
-                    "74e7445d880447a282e3ab466aa2352b", "Ranosh@test.com");
+                // await _gameballPlugin.initMethodCall(
+                //     "74e7445d880447a282e3ab466aa2352b", "Ranosh@test.com");
               },
               child: const Text("init User"),
             ),
