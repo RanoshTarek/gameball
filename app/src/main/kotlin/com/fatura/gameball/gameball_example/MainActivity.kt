@@ -1,0 +1,6 @@
+package com.fatura.gameball.gameball_example
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

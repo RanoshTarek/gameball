@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.gameballers:gb-mobile-android:1.1.1@aar">
+    <CLASSES>
+      <root url="jar://C:/Program Files/Java/corretto-11.0.15/caches/transforms-3/b4cef76b1437ad0ecc92fc8c3834a94e/transformed/jetified-gb-mobile-android-1.1.1/jars/classes.jar!/" />
+      <root url="file://C:/Program Files/Java/corretto-11.0.15/caches/transforms-3/b4cef76b1437ad0ecc92fc8c3834a94e/transformed/jetified-gb-mobile-android-1.1.1/res" />
+      <root url="file://C:/Program Files/Java/corretto-11.0.15/caches/transforms-3/b4cef76b1437ad0ecc92fc8c3834a94e/transformed/jetified-gb-mobile-android-1.1.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://C:/Program Files/Java/corretto-11.0.15/caches/modules-2/files-2.1/com.github.gameballers/gb-mobile-android/1.1.1/6fdf95fb61639560474d0dd7a4491ec980dc4957/gb-mobile-android-1.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
