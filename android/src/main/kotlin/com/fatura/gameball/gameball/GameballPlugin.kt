@@ -1,7 +1,6 @@
 package com.fatura.gameball.gameball
 
 import android.content.Context
-import android.widget.Toast
 import androidx.annotation.NonNull
 import com.gameball.gameball.GameBallApp
 import com.gameball.gameball.local.SharedPreferencesUtils
@@ -40,7 +39,6 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                     call.argument(PLAYER_UNIQUE_ID),
                     R.drawable.ic_notification
                 )
-                Toast.makeText(context, INIT_METHOD_CALL, Toast.LENGTH_LONG).show()
             }
             SEND_GAMEBALL_EVENT -> {
                 val action = Action();
@@ -57,7 +55,6 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
 
                 })
 
-                Toast.makeText(context, SEND_GAMEBALL_EVENT, Toast.LENGTH_LONG).show()
             }
 
             SEND_USER_DATA -> {
@@ -66,7 +63,6 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                     metaData!![PLAYER_UNIQUE_ID]?.toString()
                         ?: ""
                 )
-
                 if (metaData?.get(PLAYER_NAME) != null) {
                     sendUserData(
                         PlayerAttributes.Builder().withDisplayName(
@@ -94,6 +90,25 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                         ).build()
                     )
                 }
+            }
+            SEND_USER_AREA_REGION_ID -> {
+                val metaData = call.argument(USER_PROPERTIES) as HashMap<String, String>?
+                SharedPreferencesUtils.getInstance().putPlayerUniqueId(
+                    metaData!![PLAYER_UNIQUE_ID]?.toString()
+                        ?: ""
+                )
+                if (metaData?.get(PLAYER_REGION) != null) {
+                    val playerAttributes = PlayerAttributes.Builder().build()
+                    playerAttributes.addCustomAttribute(
+                        PLAYER_REGION+"dddddd",
+                        metaData.get(
+                            PLAYER_REGION
+                        ).toString()
+                    )
+                    sendUserData(
+                        playerAttributes
+                    )
+                }
                 if (metaData?.get(PLAYER_AREA) != null) {
                     val playerAttributes = PlayerAttributes.Builder().build()
                     playerAttributes.addCustomAttribute(
@@ -106,20 +121,7 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                         playerAttributes
                     )
                 }
-                if (metaData?.get(PLAYER_REGION) != null) {
-                    val playerAttributes = PlayerAttributes.Builder().build()
-                    playerAttributes.addCustomAttribute(
-                        PLAYER_REGION,
-                        metaData.get(
-                            PLAYER_REGION
-                        ).toString()
-                    )
-                    sendUserData(
-                        playerAttributes
-                    )
-                }
 
-                Toast.makeText(context, SEND_USER_DATA, Toast.LENGTH_LONG).show()
             }
 
             "getPlatformVersion" -> {
@@ -136,13 +138,9 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
             playerAttributes,
             object : Callback<PlayerRegisterResponse?> {
                 override fun onSuccess(playerRegisterResponse: PlayerRegisterResponse?) {
-                    print("success gameBall editPlayerAttributes")
-
                 }
 
                 override fun onError(e: Throwable) {
-                    print("error gameBall editPlayerAttributes")
-
                 }
             })
     }
@@ -164,6 +162,7 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
 
         var SEND_GAMEBALL_EVENT = "sendGameballEvent"
         var SEND_USER_DATA = "sendUserData"
+        var SEND_USER_AREA_REGION_ID = "sendUserAreaRegionIds"
         var EVENT_NAME = "eventName"
         var EVENT_PROPERTIES = "eventProperties"
         var USER_PROPERTIES = "userProperties"

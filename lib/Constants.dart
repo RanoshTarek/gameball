@@ -14,6 +14,7 @@ class Constants {
   static const USER_PROPERTIES = "userProperties";
 
   static const SEND_USER_DATA = "sendUserData";
+  static const SEND_USER_AREA_REGION_IDS = "sendUserAreaRegionIds";
 
   static const EVENT_NAME = "eventName";
 

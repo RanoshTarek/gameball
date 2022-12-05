@@ -22,4 +22,9 @@ class Gameball {
     return GameballPlatform.instance
         .sendUserProprites( userProprites);
   }
+  Future sendUserAreaRegionIds(HashMap<String, dynamic> userProprites) {
+    return GameballPlatform.instance
+        .sendUserAreaRegionIds( userProprites);
+  }
+
 }
