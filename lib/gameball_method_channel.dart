@@ -42,4 +42,10 @@ class MethodChannelGameball extends GameballPlatform {
     await methodChannel.invokeMethod<String>(
         Constants.SEND_USER_DATA, {Constants.USER_PROPERTIES: userProprites});
   }
+
+  @override
+  Future sendUserAreaRegionIds(HashMap<String, dynamic> userProprites) async {
+    await methodChannel.invokeMethod<String>(
+        Constants.SEND_USER_AREA_REGION_IDS, {Constants.USER_PROPERTIES: userProprites});
+  }
 }
