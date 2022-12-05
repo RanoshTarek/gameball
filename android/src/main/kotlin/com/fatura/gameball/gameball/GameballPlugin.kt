@@ -100,7 +100,7 @@ class GameballPlugin : FlutterPlugin, MethodCallHandler {
                 if (metaData?.get(PLAYER_REGION) != null) {
                     val playerAttributes = PlayerAttributes.Builder().build()
                     playerAttributes.addCustomAttribute(
-                        PLAYER_REGION+"dddddd",
+                        PLAYER_REGION,
                         metaData.get(
                             PLAYER_REGION
                         ).toString()
